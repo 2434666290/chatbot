@@ -121,7 +121,6 @@ elif choose == 'AI painting':
                 return image_url
 
         input = st.text_area("what's you want to paint")
-        #st.image(ChatGPT_AI_DrawBot(input))
         if st.form_submit_button('start'):
             with st.spinner('Loading Image...'):
                 st.image(ChatGPT_AI_DrawBot(input), caption='Generated Image')
