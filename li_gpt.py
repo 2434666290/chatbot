@@ -6,8 +6,7 @@ import streamlit as st
 st.set_page_config(page_title="Li-chatbot", page_icon="robot_face:")
 st.markdown("<h1 style='text-align: center;'>chatbot created by Li</h1>", unsafe_allow_html=True)
 
-# Set org ID and API key
-openai.organization = st.sidebar.text_input('ID')
+# Set API key
 openai.api_key = st.sidebar.text_input('KEY')
 
 # Initialise session state variables
@@ -81,20 +80,21 @@ with st.form(key='my_form', clear_on_submit=True):
     submit_button = st.form_submit_button(label='Send')
 
 if submit_button and user_input:
-    output, total_tokens, prompt_tokens, completion_tokens = generate_response(user_input)
-    st.session_state['past'].append(user_input)
-    st.session_state['generated'].append(output)
-    st.session_state['model_name'].append(model_name)
-    st.session_state['total_tokens'].append(total_tokens)
-
-    # from https://openai.com/pricing#language-models
-    if model_name == "GPT-3.5":
-        cost = total_tokens * 0.002 / 1000
-    else:
-        cost = (prompt_tokens * 0.03 + completion_tokens * 0.06) / 1000
-
-    st.session_state['cost'].append(cost)
-    st.session_state['total_cost'] += cost
+    with st.spinner('Running...'):
+        output, total_tokens, prompt_tokens, completion_tokens = generate_response(user_input)
+        st.session_state['past'].append(user_input)
+        st.session_state['generated'].append(output)
+        st.session_state['model_name'].append(model_name)
+        st.session_state['total_tokens'].append(total_tokens)
+    
+        # from https://openai.com/pricing#language-models
+        if model_name == "GPT-3.5":
+            cost = total_tokens * 0.002 / 1000
+        else:
+            cost = (prompt_tokens * 0.03 + completion_tokens * 0.06) / 1000
+    
+        st.session_state['cost'].append(cost)
+        st.session_state['total_cost'] += cost
 
 if st.session_state['generated']:
     with response_container:
