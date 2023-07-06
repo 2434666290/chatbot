@@ -51,7 +51,7 @@ if choose == 'AI communication':
         st.session_state['number_tokens'] = []
         st.session_state['model_name'] = []
         st.session_state['cost'] = []
-        st.session_state['total_cost'] = 0.0
+        #st.session_state['total_cost'] = 0.0
         st.session_state['total_tokens'] = []
         counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
 
